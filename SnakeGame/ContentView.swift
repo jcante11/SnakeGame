@@ -13,10 +13,10 @@ struct ContentView: View {
         case up, down, left, right
     }
     
-    let minx = UIScreen.main.bounds.minX
-    let maxx = UIScreen.main.bounds.maxX
-    let miny = UIScreen.main.bounds.minY
-    let maxy = UIScreen.main.bounds.maxY
+    let minX = UIScreen.main.bounds.minX
+    let maxX = UIScreen.main.bounds.maxX
+    let minY = UIScreen.main.bounds.minY
+    let maxY = UIScreen.main.bounds.maxY
     
     @State var startPos: CGPoint = .zero
     @State var isStarted = true
@@ -36,10 +36,17 @@ struct ContentView: View {
                 ForEach(0..<posArray.count, id:\.self){index in
                     Rectangle()
                         .frame(width: self.snakeSize, height: self.snakeSize)
-                        //snake color
+                    //snake color
                         .foregroundColor(Color(red: 0.1, green: 0.3, blue: 0.6))
                         .position(self.posArray[index])
                 }
+                
+                Rectangle()
+                    .fill(Color(red: 0.6, green: 0.2, blue: 0.1))
+                    .frame(width: snakeSize, height: snakeSize)
+                    .position(foodPos)
+            }
+                
                 if self.gameOver {
                     VStack(spacing: 10) {
                         Text("Game Over")
@@ -86,13 +93,12 @@ struct ContentView: View {
                 }
             }
             .edgesIgnoringSafeArea(.all)
-        }
     }
     
     func changeDirection() {
-        if self.posArray[0].x < minx || self.posArray[0].x > maxx && !gameOver {
+        if self.posArray[0].x < minX || self.posArray[0].x > maxX && !gameOver {
             gameOver.toggle()
-        } else if self.posArray[0].y < miny || self.posArray[0].y > maxy && !gameOver {
+        } else if self.posArray[0].y < minY || self.posArray[0].y > maxY && !gameOver {
             gameOver.toggle()
         }
         
@@ -114,8 +120,8 @@ struct ContentView: View {
         }
     }
     func changeRectPosition() -> CGPoint {
-        let rows = Int(maxx / snakeSize)
-        let columns = Int(maxy / snakeSize)
+        let rows = Int(maxX / snakeSize)
+        let columns = Int(maxY / snakeSize)
         
         let randomX = Int.random(in: 1..<rows) * Int(snakeSize)
         let randomY = Int.random(in: 1..<columns) * Int(snakeSize)
