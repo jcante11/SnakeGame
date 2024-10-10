@@ -9,9 +9,19 @@ import SwiftUI
 
 @main
 struct SnakeGameApp: App {
+    
+    @StateObject var appState = AppState.shared
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ContentView().id(appState.gameID)
         }
     }
+}
+
+
+//create a global app state
+class AppState: ObservableObject {
+    static let shared = AppState()
+    
+    @Published var gameID = UUID()
 }
